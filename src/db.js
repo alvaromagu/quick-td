@@ -1,11 +1,11 @@
-import { join } from "node:path";
-import { homedir } from "node:os";
-import { mkdirSync } from "node:fs";
-import { DatabaseSync } from "node:sqlite";
+import { join } from 'node:path';
+import { homedir } from 'node:os';
+import { mkdirSync } from 'node:fs';
+import { DatabaseSync } from 'node:sqlite';
 
-const dir = join(homedir(), ".quick-td");
+const dir = join(homedir(), '.quick-td');
 mkdirSync(dir, { recursive: true });
-const dbName = process.env.DB_NAME ?? "todos.db";
+const dbName = process.env.DB_NAME ?? 'todos.db';
 const dbPath = join(dir, dbName);
 
 export const db = new DatabaseSync(dbPath);
