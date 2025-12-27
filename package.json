@@ -1,10 +1,10 @@
 {
   "name": "quick-td",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "src/index.js",
   "type": "module",
   "bin": {
-    "qtd": "src/index.js"
+    "todos": "src/index.js"
   },
   "scripts": {
     "start": "node --env-file=.env src/index.js",
