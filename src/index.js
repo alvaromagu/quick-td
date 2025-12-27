@@ -1,38 +1,18 @@
 #!/usr/bin/env node
-import { DatabaseSync } from "node:sqlite";
-import { join } from "node:path";
-import { homedir } from "node:os";
-import { mkdirSync } from "node:fs";
 import {
+  confirm,
   intro,
+  isCancel,
   log,
+  multiselect,
+  note,
   outro,
   select,
   text,
-  note,
-  isCancel,
-  multiselect,
-  confirm,
 } from "@clack/prompts";
+import { db } from "./db.js";
 
-// Configuración de la ruta persistente
-const dir = join(homedir(), ".quick-td");
-mkdirSync(dir, { recursive: true });
-const dbName = process.env.DB_NAME ?? "todos.db";
-const dbPath = join(dir, dbName);
-
-const db = new DatabaseSync(dbPath);
 const today = new Date().toISOString().split("T")[0];
-
-// --- SISTEMA DE MIGRACIONES ---
-db.exec(`
-  CREATE TABLE IF NOT EXISTS tasks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    task TEXT NOT NULL,
-    completed INTEGER DEFAULT 0,
-    completed_at TEXT DEFAULT NULL
-  )
-`);
 
 async function main() {
   intro("Bienvenido a quick-td");
