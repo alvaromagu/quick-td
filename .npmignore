@@ -1,0 +1,13 @@
+# Ignorar dependencias locales
+node_modules/
+
+# Ignorar la base de datos de desarrollo
+*.db
+*.db-journal
+
+# Ignorar logs de errores
+npm-debug.log*
+pnpm-debug.log*
+
+# Ignorar archivos de configuración de entorno
+.env
