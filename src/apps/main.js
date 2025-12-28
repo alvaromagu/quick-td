@@ -13,6 +13,7 @@ import {
 import { todoService } from '../todo-service.js';
 import { printPendingTodos } from './list.js';
 import { printCompletedTodosByDate, validateDate } from './search.js';
+import { addTodo } from './add.js';
 
 const today = new Date().toISOString().split('T')[0];
 
@@ -66,8 +67,7 @@ export async function main() {
             validate: (v) => (v.length === 0 ? 'Campo obligatorio' : undefined),
           });
           if (isCancel(name)) break;
-          todoService.createTodo(name);
-          log.success('Tarea añadida correctamente.');
+          addTodo(name);
         } else {
           const todoToEdit = allTodos.find((t) => t.id === selection);
           const newName = await text({
