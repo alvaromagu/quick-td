@@ -14,6 +14,7 @@ import { todoService } from '../todo-service.js';
 import { printPendingTodos } from './list.js';
 import { printCompletedTodosByDate, validateDate } from './search.js';
 import { addTodo } from './add.js';
+import { deleteTodoWithSearch } from './delete.js';
 
 const today = new Date().toISOString().split('T')[0];
 
@@ -129,37 +130,11 @@ export async function main() {
       }
 
       case 'delete': {
-        const allTodos = todoService.getAllTodos();
-        if (allTodos.length === 0) {
-          log.warn('No hay tareas para eliminar.');
-          break;
-        }
-
-        const idToDelete = await select({
-          message: 'Selecciona la tarea a eliminar:',
-          options: allTodos.map((t) => ({
-            value: t.id,
-            label: t.completed ? `\x1b[9m${t.task}\x1b[29m` : t.task,
-            hint: t.completed ? 'Completada' : 'Pendiente',
-          })),
+        const searchFilter = await text({
+          message: 'Introduce el nombre de la tarea:',
         });
-
-        if (isCancel(idToDelete)) break;
-
-        const todo = allTodos.find((t) => t.id === idToDelete);
-        const shouldDelete = await confirm({
-          message: `¿Eliminar "${todo.task}"?`,
-          active: 'Sí, eliminar',
-          inactive: 'No, cancelar',
-        });
-
-        if (isCancel(shouldDelete) || !shouldDelete) {
-          log.info('Operación cancelada.');
-          break;
-        }
-
-        todoService.deleteTodo(idToDelete);
-        log.error('Tarea eliminada definitivamente.');
+        if (isCancel(searchFilter)) break;
+        await deleteTodoWithSearch(searchFilter);
         break;
       }
     }

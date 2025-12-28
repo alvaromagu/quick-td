@@ -5,6 +5,15 @@ export const todoService = {
     return db.prepare('SELECT * FROM tasks').all();
   },
 
+  getTodos({ search } = {}) {
+    let query = 'SELECT * FROM tasks';
+    if (typeof search === 'string' && search.trim().length > 0) {
+      search = `%${search}%`;
+      return db.prepare(`${query} WHERE task like ?`).all(search);
+    }
+    return db.prepare(query).all();
+  },
+
   getPendingTodos() {
     return db.prepare('SELECT * FROM tasks WHERE completed = 0').all();
   },
